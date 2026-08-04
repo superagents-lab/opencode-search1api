@@ -1,0 +1,49 @@
+{
+  "name": "opencode-search1api",
+  "version": "0.1.0",
+  "description": "Search1API web search, news, page retrieval, sitemap, and trending tools for OpenCode",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superagents-lab/opencode-search1api.git"
+  },
+  "homepage": "https://www.search1api.com/docs",
+  "bugs": {
+    "url": "https://github.com/superagents-lab/opencode-search1api/issues"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "search1api",
+    "web-search",
+    "news",
+    "crawl"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.18.4",
+    "search1api-cli": "^1.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
