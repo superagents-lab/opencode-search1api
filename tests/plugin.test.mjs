@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import plugin from "../dist/index.js";
 
@@ -12,6 +13,14 @@ const context = {
   metadata() {},
   async ask() {},
 };
+
+test("exposes the OpenCode server plugin target", async () => {
+  const packageJson = JSON.parse(
+    await readFile(new URL("../package.json", import.meta.url), "utf8")
+  );
+  assert.equal(packageJson.exports["./server"].import, "./dist/index.js");
+  assert.equal(packageJson.exports["./server"].types, "./dist/index.d.ts");
+});
 
 test("registers all Search1API tools", async () => {
   const hooks = await plugin({});
