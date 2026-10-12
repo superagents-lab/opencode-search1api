@@ -1,14 +1,14 @@
 {
   "name": "opencode-search1api",
-  "version": "0.1.1",
-  "description": "Search1API web search, news, page retrieval, sitemap, and trending tools for OpenCode",
+  "version": "0.2.0",
+  "description": "Search1API web search, agentic search, news, page retrieval, sitemap, and trending tools for OpenCode",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/superagents-lab/opencode-search1api.git"
   },
-  "homepage": "https://www.search1api.com/docs",
+  "homepage": "https://s1.dev/docs",
   "bugs": {
     "url": "https://github.com/superagents-lab/opencode-search1api/issues"
   },
@@ -42,7 +42,7 @@
   ],
   "dependencies": {
     "@opencode-ai/plugin": "^1.18.4",
-    "search1api-cli": "^1.3.0"
+    "search1api-cli": "^2.0.0"
   },
   "devDependencies": {
     "typescript": "^5.9.0"
