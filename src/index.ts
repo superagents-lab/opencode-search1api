@@ -1,5 +1,6 @@
 import { tool, type Plugin, type PluginOptions } from "@opencode-ai/plugin";
 import {
+  ask,
   crawl,
   news,
   search,
@@ -32,8 +33,10 @@ export const Search1APIPlugin: Plugin = async (_input, options = {}) => {
             .enum([
               "google",
               "bing",
+              "bingcn",
               "duckduckgo",
               "yahoo",
+              "yandex",
               "x",
               "reddit",
               "github",
@@ -43,12 +46,17 @@ export const Search1APIPlugin: Plugin = async (_input, options = {}) => {
               "bilibili",
               "imdb",
               "wikipedia",
+              "grokipedia",
+              "baidu",
+              "360",
+              "quark",
             ])
             .optional(),
+          page: tool.schema.number().int().min(1).max(100).optional(),
           crawlResults: tool.schema.number().int().min(0).max(50).optional(),
           includeSites: tool.schema.array(tool.schema.string()).optional(),
           excludeSites: tool.schema.array(tool.schema.string()).optional(),
-          timeRange: tool.schema.enum(["day", "month", "year"]).optional(),
+          timeRange: tool.schema.enum(["day", "week", "month", "year"]).optional(),
         },
         async execute(args, context) {
           const data = await search(args.query, {
@@ -56,6 +64,7 @@ export const Search1APIPlugin: Plugin = async (_input, options = {}) => {
             signal: context.abort,
             maxResults: args.maxResults,
             searchService: args.searchService as SearchService | undefined,
+            page: args.page,
             crawlResults: args.crawlResults,
             includeSites: args.includeSites,
             excludeSites: args.excludeSites,
@@ -70,12 +79,12 @@ export const Search1APIPlugin: Plugin = async (_input, options = {}) => {
           query: tool.schema.string().describe("News query."),
           maxResults: tool.schema.number().int().min(1).max(50).optional(),
           searchService: tool.schema
-            .enum(["google", "bing", "duckduckgo", "yahoo", "hackernews"])
+            .enum(["google", "bing", "duckduckgo", "yahoo", "hackernews", "reuters"])
             .optional(),
           crawlResults: tool.schema.number().int().min(0).max(50).optional(),
           includeSites: tool.schema.array(tool.schema.string()).optional(),
           excludeSites: tool.schema.array(tool.schema.string()).optional(),
-          timeRange: tool.schema.enum(["day", "month", "year"]).optional(),
+          timeRange: tool.schema.enum(["day", "week", "month", "year"]).optional(),
         },
         async execute(args, context) {
           const data = await news(args.query, {
@@ -89,6 +98,14 @@ export const Search1APIPlugin: Plugin = async (_input, options = {}) => {
             timeRange: args.timeRange as TimeRange | undefined,
           });
           return JSON.stringify(data, null, 2);
+        },
+      }),
+      search1api_ask: tool({
+        description:
+          "Describe what to find in natural language. Search1API chooses engines and a time window and returns results ranked by relevance. Costs 5 credits.",
+        args: { query: tool.schema.string().trim().min(1).max(500) },
+        async execute({ query }, context) {
+          return JSON.stringify(await ask(query, { apiKey, signal: context.abort }), null, 2);
         },
       }),
       search1api_crawl: tool({
